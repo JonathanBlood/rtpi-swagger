@@ -11,7 +11,7 @@ http://jonathanblood.net/rtpi/swagger/
 Documentation for the Real Time Passenger Information can be found here:
 
 ```bash
-http://jonathanblood.net/rtpi/documentation/#
+http://jonathanblood.net/rtpi/documentation/
 ```
 
 ## Generate RTPI SDK's
