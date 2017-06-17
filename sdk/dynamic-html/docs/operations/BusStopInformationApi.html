@@ -1,0 +1,62 @@
+<div class="main-content">
+  <h2><a name=""></a></h2>
+  <p>This is the  API</p>
+
+  <h2><a name="getBusStops"></a>getBusStops</h2>
+  <hr>
+  <p></p>
+  
+  <h3 class="section">URL</h3>
+  <code>https://data.dublinked.ie/cgi-bin/rtpi//busstopinformation</code>
+  <h3 class="section">HTTP Method</h3>
+  <code>GET</code>
+  <h3 class="section">Response Type</h3>
+  <div class="model" data-model="BusStopList"><a href="">BusStopList</a></div>
+  <h3 class="section">Parameters</h3>
+  <ul>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">format</span>
+      <span class="param-type">String</span>
+      
+      <p class="param-description">If not provided JSON format will be used by default</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">operator</span>
+      <span class="param-type">String</span>
+      
+      <p class="param-description">If provided retrieves routes for the given operator</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">stopid</span>
+      <span class="param-type">String</span>
+      
+      <p class="param-description">The bus stop id, if not provided all bus stops are returned</p>
+	  </li>
+	  <li class="parameter">
+      
+      <span class="param-in">Query: </span>
+      
+      
+      
+      <span class="param-name">stopname</span>
+      <span class="param-type">String</span>
+      
+      <p class="param-description">The stop name, only matching stops are returned</p>
+	  </li>
+  </ul>
+</div>

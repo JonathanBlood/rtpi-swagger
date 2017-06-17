@@ -1,0 +1,371 @@
+h1. RTPI REST Web Services API <p>RTPI REST Web Services API (<a href=\"https://goo.gl/s6NTJe\">RRWS API</a>) provides REST interface to retrieve information on real time bus information, timetables and bus stops. </p> <p>Each method available in RRWS API will be invoked using plain HTTP Request (GET method). Depending on parameters provided, result will be returned either in XML or JSON format (if format is not provided then JSON is used by default). Response will contain requested information (see method specification for details) and error status of the request.</p>  <h2>Error Codes</h2> <table> <tr><th>Error Code</th><th>Description</th></tr> <tr><td>0</td><td>Success</td></tr> <tr><td>1</td><td>No Results</td></tr> <tr><td>2</td><td>Missing Parameter</td></tr> <tr><td>3</td><td>Invalid Parameter</td></tr> <tr><td>4</td><td>Sceduled Downtime</td></tr> <tr><td>5</td><td>Unexpected System Error</td></tr> </table> <p>Error code is included in response for each message. For some error codes additional details will be provided in free text format (Error Message field).</p> 
+
+*Version:* 1.0.0
+
+----
+
+{toc:printable=true|style=square|minLevel=2|maxLevel=3|type=list|outline=false|include=.*}
+
+h2. Endpoints
+
+    h3. getBusStops
+    {status:colour=Yellow|title=get|subtle=false}
+    {code}
+    get /busstopinformation
+    {code}
+    *Summary:* Endpoint to retrieve bus stop information
+    *Description:* 
+
+
+    h4. Parameters
+
+
+
+        h5. Query Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |format |If not provided JSON format will be used by default |(x) | |  |
+|operator |If provided retrieves routes for the given operator |(x) | |  |
+|stopid |The bus stop id, if not provided all bus stops are returned |(x) | |  |
+|stopname |The stop name, only matching stops are returned |(x) | |  |
+
+
+
+
+    h4. Responses
+        *Status Code:* 200
+        *Message:*     Success
+        {code:title=Response Type}
+BusStopList
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Success",
+  "schema" : {
+    "$ref" : "#/definitions/BusStopList"
+  }
+}
+        {code}
+    ----
+
+    h3. getOperators
+    {status:colour=Yellow|title=get|subtle=false}
+    {code}
+    get /operatorinformation
+    {code}
+    *Summary:* Endpoint to retrieve information about route operators in the system
+    *Description:* 
+
+
+    h4. Parameters
+
+
+
+        h5. Query Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |format |If not provided JSON format will be used by default |(x) | |  |
+
+
+
+
+    h4. Responses
+        *Status Code:* 200
+        *Message:*     Success
+        {code:title=Response Type}
+OperatorList
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Success",
+  "schema" : {
+    "$ref" : "#/definitions/OperatorList"
+  }
+}
+        {code}
+    ----
+
+    h3. getRealTimeBusInformation
+    {status:colour=Yellow|title=get|subtle=false}
+    {code}
+    get /realtimebusinformation
+    {code}
+    *Summary:* Endpoint to retrieve real time bus information
+    *Description:* 
+
+
+    h4. Parameters
+
+
+
+        h5. Query Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |format |If not provided JSON format will be used by default |(x) | |  |
+|operator |If provided retrieves routes for the given operator |(x) | |  |
+|stopid |The bus stop id |(/) | |  |
+|routeid |The route identifier |(x) | |  |
+|maxresults |The maximum number of results, if not provided system will limit the number of results depending on server configuration |(x) | |  |
+
+
+
+
+    h4. Responses
+        *Status Code:* 200
+        *Message:*     Success
+        {code:title=Response Type}
+RealTimeInformationList
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Success",
+  "schema" : {
+    "$ref" : "#/definitions/RealTimeInformationList"
+  }
+}
+        {code}
+    ----
+
+    h3. getRouteDetail
+    {status:colour=Yellow|title=get|subtle=false}
+    {code}
+    get /routeinformation
+    {code}
+    *Summary:* Endpoint to retrieve route detail information
+    *Description:* 
+
+
+    h4. Parameters
+
+
+
+        h5. Query Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |format |If not provided JSON format will be used by default |(x) | |  |
+|operator |The requested operator id |(/) | |  |
+|routeid |The requested route id |(/) | |  |
+
+
+
+
+    h4. Responses
+        *Status Code:* 200
+        *Message:*     Success
+        {code:title=Response Type}
+RouteDetailList
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Success",
+  "schema" : {
+    "$ref" : "#/definitions/RouteDetailList"
+  }
+}
+        {code}
+    ----
+
+    h3. getRoutes
+    {status:colour=Yellow|title=get|subtle=false}
+    {code}
+    get /routelistinformation
+    {code}
+    *Summary:* Endpoint to retrieve list of routes
+    *Description:* 
+
+
+    h4. Parameters
+
+
+
+        h5. Query Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |format |If not provided JSON format will be used by default |(x) | |  |
+|operator |If provided retrieves routes for the given operator |(x) | |  |
+
+
+
+
+    h4. Responses
+        *Status Code:* 200
+        *Message:*     Success
+        {code:title=Response Type}
+RouteList
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Success",
+  "schema" : {
+    "$ref" : "#/definitions/RouteList"
+  }
+}
+        {code}
+    ----
+
+    h3. getTimeTable
+    {status:colour=Yellow|title=get|subtle=false}
+    {code}
+    get /timetableinformation
+    {code}
+    *Summary:* Endpoint to retrieve timetable information
+    *Description:* 
+
+
+    h4. Parameters
+
+
+
+        h5. Query Parameters
+        ||Name||Description||Required||Default||Pattern||
+        |format |If not provided JSON format will be used by default |(x) | |  |
+|type |value: week; Time table information is retrieved for the whole week |(/) | |  |
+|stopid |The bus stop id, if not provided all bus stops are returned |(/) | |  |
+|routeid |The route identifier |(/) | |  |
+
+
+
+
+    h4. Responses
+        *Status Code:* 200
+        *Message:*     Success
+        {code:title=Response Type}
+TimetableList
+        {code}
+        See [#models]
+
+
+
+        {code:title=Response Schema |collapse=true}
+{
+  "description" : "Success",
+  "schema" : {
+    "$ref" : "#/definitions/TimetableList"
+  }
+}
+        {code}
+    ----
+
+h2. Models
+
+        h3. BusStopList
+        ||Field Name||Required||Type||Description||
+         |errorcode | |String | |
+ |errormessage | |String | |
+ |numberofresults | |Integer | |
+ |timestamp | |String | |
+ |results | |array[Stop] | |
+        h3. Operator
+        ||Field Name||Required||Type||Description||
+         |operatorreference | |String | |
+ |operatorname | |String | |
+ |operatordescription | |String | |
+        h3. OperatorList
+        ||Field Name||Required||Type||Description||
+         |errorcode | |String | |
+ |errormessage | |String | |
+ |numberofresults | |Integer | |
+ |timestamp | |String | |
+ |results | |array[Operator] | |
+        h3. RealTimeInformation
+        ||Field Name||Required||Type||Description||
+         |arrivaldatetime | |String | |
+ |duetime | |String | |
+ |departuredatetime | |String | |
+ |departureduetime | |String | |
+ |scheduledarrivaldatetime | |String | |
+ |scheduleddeparturedatetime | |String | |
+ |destination | |String | |
+ |destinationlocalized | |String | |
+ |origin | |String | |
+ |originlocalized | |String | |
+ |direction | |String | |
+ |operator | |String | |
+ |additionalinformation | |String | |
+ |lowfloorstatus | |String | |
+ |route | |String | |
+ |sourcetimestamp | |String | |
+ |monitored | |String | |
+        h3. RealTimeInformationList
+        ||Field Name||Required||Type||Description||
+         |errorcode | |String | |
+ |errormessage | |String | |
+ |numberofresults | |Integer | |
+ |stopid | |String | |
+ |timestamp | |String | |
+ |results | |array[RealTimeInformation] | |
+        h3. Route
+        ||Field Name||Required||Type||Description||
+         |operator | |String | |
+ |route | |String | |
+        h3. RouteDetail
+        ||Field Name||Required||Type||Description||
+         |operator | |String | |
+ |origin | |String | |
+ |originlocalized | |String | |
+ |destination | |String | |
+ |destinationlocalized | |String | |
+ |lastupdated | |String | |
+ |stops | |array[Stop] | |
+        h3. RouteDetailList
+        ||Field Name||Required||Type||Description||
+         |errorcode | |String | |
+ |errormessage | |String | |
+ |numberofresults | |Integer | |
+ |route | |String | |
+ |timestamp | |String | |
+ |results | |array[RouteDetail] | |
+        h3. RouteList
+        ||Field Name||Required||Type||Description||
+         |errorcode | |String | |
+ |errormessage | |String | |
+ |numberofresults | |Integer | |
+ |timestamp | |String | |
+ |results | |array[Route] | |
+        h3. RouteOperator
+        ||Field Name||Required||Type||Description||
+         |name | |String | |
+ |routes | |array[String] | |
+        h3. Stop
+        ||Field Name||Required||Type||Description||
+         |stopid | |String | |
+ |displaystopid | |String | |
+ |shortname | |String | |
+ |shortnamelocalized | |String | |
+ |fullname | |String | |
+ |fullnamelocalized | |String | |
+ |latitude | |String | |
+ |longitude | |String | |
+ |operators | |array[RouteOperator] | |
+        h3. Timetable
+        ||Field Name||Required||Type||Description||
+         |startdayofweek | |String | |
+ |enddayofweek | |String | |
+ |destination | |String | |
+ |destinationlocalized | |String | |
+ |lastupdated | |String | |
+ |departures | |array[String] | |
+        h3. TimetableList
+        ||Field Name||Required||Type||Description||
+         |errorcode | |String | |
+ |errormessage | |String | |
+ |numberofresults | |Integer | |
+ |route | |String | |
+ |stopid | |String | |
+ |timestamp | |String | |
+ |results | |array[Timetable] | |
