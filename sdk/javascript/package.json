@@ -1,0 +1,18 @@
+{
+  "name": "rtpi_rest_web_services_api",
+  "version": "1.0.0",
+  "description": "pRTPI_REST_Web_Services_API__a_hrefhttpsgoo_gls6NTJeRRWS_APIa_provides_REST_interface_to_retrieve_information_on_real_time_businformation_timetables_and_bus_stops_ppEach_method_available_in_RRWS_API_will_be_invoked_using_plain_HTTP_Request__GET_method__Depending_on_parameters_provided_result_will_be_returned_either_in_XML_or_JSON_format__if_format_is_not_provided_then_JSON_is_used_by_default__Response_will_contain_requested_information__see_method_specification_for_details_and_error_status_of_the_request_ph2Error_Codesh2tabletrthError_CodeththDescriptionthtrtrtd0tdtdSuccesstdtrtrtd1tdtdNo_Resultstdtrtrtd2tdtdMissing_Parametertdtrtrtd3tdtdInvalid_Parametertdtrtrtd4tdtdSceduled_Downtimetdtrtrtd5tdtdUnexpected_System_ErrortdtrtablepError_code_is_included_in_response_for_each_message__For_some_error_codes_additional_details_will_be_provided_in_free_text_format__Error_Message_field_p",
+  "license": "Apache-2.0",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha --recursive"
+  },
+  "dependencies": {
+    "superagent": "1.7.1"
+  },
+  "devDependencies": {
+    "mocha": "~2.3.4",
+    "sinon": "1.17.3",
+    "expect.js": "~0.3.1"
+  }
+}

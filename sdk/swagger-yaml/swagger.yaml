@@ -1,0 +1,643 @@
+---
+swagger: "2.0"
+info:
+  description: "<p>RTPI REST Web Services API (<a href=\"https://goo.gl/s6NTJe\">RRWS\
+    \ API</a>) provides REST interface to retrieve information on real time bus\n\
+    information, timetables and bus stops.\n</p>\n<p>Each method available in RRWS\
+    \ API will be invoked using plain HTTP Request (GET method). Depending on parameters\
+    \ provided, result will be returned either in XML or JSON format (if format is\
+    \ not provided then JSON is used by default). Response will contain requested\
+    \ information (see method specification for details) and error status of the request.</p>\n\
+    \n<h2>Error Codes</h2>\n<table>\n<tr><th>Error Code</th><th>Description</th></tr>\n\
+    <tr><td>0</td><td>Success</td></tr>\n<tr><td>1</td><td>No Results</td></tr>\n\
+    <tr><td>2</td><td>Missing Parameter</td></tr>\n<tr><td>3</td><td>Invalid Parameter</td></tr>\n\
+    <tr><td>4</td><td>Sceduled Downtime</td></tr>\n<tr><td>5</td><td>Unexpected System\
+    \ Error</td></tr>\n</table>\n<p>Error code is included in response for each message.\
+    \ For some error codes additional details will be provided in free text format\
+    \ (Error Message field).</p>\n"
+  version: "1.0.0"
+  title: "RTPI REST Web Services API"
+host: "data.dublinked.ie"
+basePath: "/cgi-bin/rtpi/"
+tags:
+- name: "Real Time Bus Information"
+  description: "Method to retrieve real time bus information for given stop number\
+    \ and route"
+  externalDocs:
+    description: "Retrieve Real Time Bus Information"
+    url: "https://goo.gl/wLMQju"
+- name: "Timetable Information"
+  description: "Method to retrieve timetable information for given stop number and\
+    \ route"
+  externalDocs:
+    description: "Retrieve Timetable Information"
+    url: "https://goo.gl/wLMQju"
+- name: "Bus Stop Information"
+  description: "Function to retrieve bus stop information"
+  externalDocs:
+    description: "Retrieve Bus Stop information"
+    url: "https://goo.gl/wLMQju"
+- name: "Operator Information"
+  description: "Function to retrieve information about route operators in the system"
+  externalDocs:
+    description: "Retrieve operator information"
+    url: "https://goo.gl/wLMQju"
+- name: "Route Information"
+  description: "Function to retrieve list of routes defined in the system"
+  externalDocs:
+    description: "Retrieve list of routes"
+    url: "https://goo.gl/wLMQju"
+- name: "Route Detail Information"
+  description: "Function to retrieve route details defined in the system"
+  externalDocs:
+    description: "Retrieve route information"
+    url: "https://goo.gl/wLMQju"
+schemes:
+- "https"
+paths:
+  /busstopinformation:
+    get:
+      tags:
+      - "Bus Stop Information"
+      summary: "Endpoint to retrieve bus stop information"
+      operationId: "getBusStops"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "format"
+        in: "query"
+        description: "If not provided JSON format will be used by default"
+        required: false
+        type: "string"
+        enum:
+        - "json"
+        - "xml"
+      - name: "operator"
+        in: "query"
+        description: "If provided retrieves routes for the given operator"
+        required: false
+        type: "string"
+        enum:
+        - "BE"
+        - "bac"
+        - "KB"
+        - "LUAS"
+        - "ir"
+      - name: "stopid"
+        in: "query"
+        description: "The bus stop id, if not provided all bus stops are returned"
+        required: false
+        type: "string"
+      - name: "stopname"
+        in: "query"
+        description: "The stop name, only matching stops are returned"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/BusStopList"
+  /operatorinformation:
+    get:
+      tags:
+      - "Operator Information"
+      summary: "Endpoint to retrieve information about route operators in the system"
+      operationId: "getOperators"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "format"
+        in: "query"
+        description: "If not provided JSON format will be used by default"
+        required: false
+        type: "string"
+        enum:
+        - "json"
+        - "xml"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/OperatorList"
+  /realtimebusinformation:
+    get:
+      tags:
+      - "Real Time Bus Information"
+      summary: "Endpoint to retrieve real time bus information"
+      operationId: "getRealTimeBusInformation"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "format"
+        in: "query"
+        description: "If not provided JSON format will be used by default"
+        required: false
+        type: "string"
+        enum:
+        - "json"
+        - "xml"
+      - name: "operator"
+        in: "query"
+        description: "If provided retrieves routes for the given operator"
+        required: false
+        type: "string"
+        enum:
+        - "BE"
+        - "bac"
+        - "KB"
+        - "LUAS"
+        - "ir"
+      - name: "stopid"
+        in: "query"
+        description: "The bus stop id"
+        required: true
+        type: "string"
+      - name: "routeid"
+        in: "query"
+        description: "The route identifier"
+        required: false
+        type: "string"
+      - name: "maxresults"
+        in: "query"
+        description: "The maximum number of results, if not provided system will limit\
+          \ the number of results depending on server configuration"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/RealTimeInformationList"
+  /routeinformation:
+    get:
+      tags:
+      - "Route Detail Information"
+      summary: "Endpoint to retrieve route detail information"
+      operationId: "getRouteDetail"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "format"
+        in: "query"
+        description: "If not provided JSON format will be used by default"
+        required: false
+        type: "string"
+        enum:
+        - "json"
+        - "xml"
+      - name: "operator"
+        in: "query"
+        description: "The requested operator id"
+        required: true
+        type: "string"
+        enum:
+        - "BE"
+        - "bac"
+        - "KB"
+        - "LUAS"
+        - "ir"
+      - name: "routeid"
+        in: "query"
+        description: "The requested route id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/RouteDetailList"
+  /routelistinformation:
+    get:
+      tags:
+      - "Route Information"
+      summary: "Endpoint to retrieve list of routes"
+      operationId: "getRoutes"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "format"
+        in: "query"
+        description: "If not provided JSON format will be used by default"
+        required: false
+        type: "string"
+        enum:
+        - "json"
+        - "xml"
+      - name: "operator"
+        in: "query"
+        description: "If provided retrieves routes for the given operator"
+        required: false
+        type: "string"
+        enum:
+        - "BE"
+        - "bac"
+        - "KB"
+        - "LUAS"
+        - "ir"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/RouteList"
+  /timetableinformation:
+    get:
+      tags:
+      - "Timetable Information"
+      summary: "Endpoint to retrieve timetable information"
+      operationId: "getTimeTable"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "format"
+        in: "query"
+        description: "If not provided JSON format will be used by default"
+        required: false
+        type: "string"
+        enum:
+        - "json"
+        - "xml"
+      - name: "type"
+        in: "query"
+        description: "value: week; Time table information is retrieved for the whole\
+          \ week"
+        required: true
+        type: "string"
+        enum:
+        - "week"
+      - name: "stopid"
+        in: "query"
+        description: "The bus stop id, if not provided all bus stops are returned"
+        required: true
+        type: "string"
+      - name: "routeid"
+        in: "query"
+        description: "The route identifier"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/TimetableList"
+definitions:
+  OperatorList:
+    type: "object"
+    properties:
+      errorcode:
+        type: "string"
+        example: "0"
+      errormessage:
+        type: "string"
+      numberofresults:
+        type: "integer"
+        format: "int32"
+        example: 5
+      timestamp:
+        type: "string"
+        example: "17/06/2017 11:44:35"
+      results:
+        type: "array"
+        xml:
+          name: "Operator"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Operator"
+    xml:
+      name: "OperatorList"
+  Operator:
+    type: "object"
+    properties:
+      operatorreference:
+        type: "string"
+        example: "BE"
+      operatorname:
+        type: "string"
+        example: "Dublin Bus"
+      operatordescription:
+        type: "string"
+    xml:
+      name: "Operator"
+  RouteList:
+    type: "object"
+    properties:
+      errorcode:
+        type: "string"
+        example: "0"
+      errormessage:
+        type: "string"
+      numberofresults:
+        type: "integer"
+        format: "int32"
+        example: 5
+      timestamp:
+        type: "string"
+        example: "17/06/2017 11:44:35"
+      results:
+        type: "array"
+        xml:
+          name: "Route"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Route"
+    xml:
+      name: "RouteList"
+  Route:
+    type: "object"
+    properties:
+      operator:
+        type: "string"
+        example: "bac"
+      route:
+        type: "string"
+        example: "102"
+    xml:
+      name: "Route"
+  RouteDetailList:
+    type: "object"
+    properties:
+      errorcode:
+        type: "string"
+        example: "0"
+      errormessage:
+        type: "string"
+      numberofresults:
+        type: "integer"
+        format: "int32"
+        example: 5
+      route:
+        type: "string"
+        example: "commuter"
+      timestamp:
+        type: "string"
+        example: "17/06/2017 11:44:35"
+      results:
+        type: "array"
+        xml:
+          name: "Route"
+          wrapped: true
+        items:
+          $ref: "#/definitions/RouteDetail"
+    xml:
+      name: "RouteDetailList"
+  RouteDetail:
+    type: "object"
+    properties:
+      operator:
+        type: "string"
+        example: "ir"
+      origin:
+        type: "string"
+        example: "Dublin Heuston Station"
+      originlocalized:
+        type: "string"
+        example: "Stáisiún Heuston"
+      destination:
+        type: "string"
+        example: "Rushbrooke Station"
+      destinationlocalized:
+        type: "string"
+        example: "Stáisiún Rinn an Chabhaigh"
+      lastupdated:
+        type: "string"
+        example: "22/01/2014 10:32:08"
+      stops:
+        type: "array"
+        xml:
+          name: "Route"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Stop"
+    xml:
+      name: "RouteDetail"
+  RouteOperator:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "ir"
+      routes:
+        type: "array"
+        items:
+          type: "string"
+    xml:
+      name: "RouteOperator"
+  Stop:
+    type: "object"
+    properties:
+      stopid:
+        type: "string"
+        example: "HSTON"
+      displaystopid:
+        type: "string"
+        example: "Dublin Heuston Station"
+      shortname:
+        type: "string"
+      shortnamelocalized:
+        type: "string"
+      fullname:
+        type: "string"
+      fullnamelocalized:
+        type: "string"
+      latitude:
+        type: "string"
+        example: "53.34642974"
+      longitude:
+        type: "string"
+        example: "-6.294607473"
+      operators:
+        type: "array"
+        xml:
+          name: "Operator"
+          wrapped: true
+        items:
+          $ref: "#/definitions/RouteOperator"
+    xml:
+      name: "Stop"
+  BusStopList:
+    type: "object"
+    properties:
+      errorcode:
+        type: "string"
+        example: "0"
+      errormessage:
+        type: "string"
+      numberofresults:
+        type: "integer"
+        format: "int32"
+        example: 5
+      timestamp:
+        type: "string"
+        example: "17/06/2017 11:44:35"
+      results:
+        type: "array"
+        xml:
+          name: "Route"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Stop"
+    xml:
+      name: "BusStopList"
+  TimetableList:
+    type: "object"
+    properties:
+      errorcode:
+        type: "string"
+        example: "0"
+      errormessage:
+        type: "string"
+      numberofresults:
+        type: "integer"
+        format: "int32"
+        example: 5
+      route:
+        type: "string"
+        example: "1"
+      stopid:
+        type: "string"
+        example: "281"
+      timestamp:
+        type: "string"
+        example: "17/06/2017 11:44:35"
+      results:
+        type: "array"
+        xml:
+          name: "Timetable"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Timetable"
+    xml:
+      name: "TimeTableList"
+  Timetable:
+    type: "object"
+    properties:
+      startdayofweek:
+        type: "string"
+        example: "Monday"
+      enddayofweek:
+        type: "string"
+        example: "Friday"
+      destination:
+        type: "string"
+        example: "Parnell Square"
+      destinationlocalized:
+        type: "string"
+        example: "Cearnóg Parnell"
+      lastupdated:
+        type: "string"
+        example: "10/02/2016 15:03:21"
+      departures:
+        type: "array"
+        items:
+          type: "string"
+          example: "14:20:33"
+    xml:
+      name: "Timetable"
+  RealTimeInformationList:
+    type: "object"
+    properties:
+      errorcode:
+        type: "string"
+        example: "0"
+      errormessage:
+        type: "string"
+      numberofresults:
+        type: "integer"
+        format: "int32"
+        example: 5
+      stopid:
+        type: "string"
+        example: "281"
+      timestamp:
+        type: "string"
+        example: "17/06/2017 11:44:35"
+      results:
+        type: "array"
+        xml:
+          name: "RealTimeInformation"
+          wrapped: true
+        items:
+          $ref: "#/definitions/RealTimeInformation"
+    xml:
+      name: "RealTimeInformationList"
+  RealTimeInformation:
+    type: "object"
+    properties:
+      arrivaldatetime:
+        type: "string"
+        example: "17/06/2017 14:40:00"
+      duetime:
+        type: "string"
+        example: "Due"
+      departuredatetime:
+        type: "string"
+        example: "17/06/2017 14:40:00"
+      departureduetime:
+        type: "string"
+        example: "Due"
+      scheduledarrivaldatetime:
+        type: "string"
+        example: "17/06/2017 14:40:00"
+      scheduleddeparturedatetime:
+        type: "string"
+        example: "17/06/2017 14:40:00"
+      destination:
+        type: "string"
+        example: "Shanard Road"
+      destinationlocalized:
+        type: "string"
+      origin:
+        type: "string"
+        example: "Park Avenue"
+      originlocalized:
+        type: "string"
+        example: "Park Avenue"
+      direction:
+        type: "string"
+        example: "Inbound"
+      operator:
+        type: "string"
+        example: "bac"
+      additionalinformation:
+        type: "string"
+      lowfloorstatus:
+        type: "string"
+        example: "no"
+      route:
+        type: "string"
+        example: "1"
+      sourcetimestamp:
+        type: "string"
+        example: "17/06/2017 13:40:16"
+      monitored:
+        type: "string"
+        example: "true"
+    xml:
+      name: "RealTimeInformation"
+externalDocs:
+  description: "RTPI Specification"
+  url: "https://goo.gl/wLMQj"
